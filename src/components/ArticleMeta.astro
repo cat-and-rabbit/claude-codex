@@ -1,0 +1,67 @@
+---
+interface Props {
+  lastVerified: Date;
+  targetVersion: string;
+  estimatedMinutes?: number;
+}
+
+const { lastVerified, targetVersion, estimatedMinutes } = Astro.props;
+
+// 日付を「2026年4月29日」形式で表示
+const dateString = lastVerified.toLocaleDateString('ja-JP', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<div class="meta-row">
+  <span><strong>最終確認</strong> {dateString}</span>
+  {estimatedMinutes && (
+    <>
+      <span class="dot" aria-hidden="true"></span>
+      <span><strong>所要時間</strong> 約{estimatedMinutes}分</span>
+    </>
+  )}
+  <span class="dot" aria-hidden="true"></span>
+  <span class="badge">v {targetVersion} 対応</span>
+</div>
+
+<style>
+  .meta-row {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 12px 0;
+    border-top: 1px solid var(--rule-soft);
+    border-bottom: 1px solid var(--rule-soft);
+    margin-bottom: 48px;
+    font-family: var(--font-jp);
+    font-size: 13px;
+    color: var(--ink-mute);
+  }
+
+  .meta-row strong {
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  .dot {
+    width: 3px;
+    height: 3px;
+    background: var(--rule);
+    border-radius: 50%;
+  }
+
+  .badge {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 1px 10px;
+    border-radius: 2px;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+</style>

@@ -1,0 +1,207 @@
+/* ==========================================================
+   Claude Code 写本 / Codex Claudia
+   global.css — デザインシステムの基礎
+   ========================================================== */
+
+/* ----- リセット ----- */
+* {
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* ----- 配色・フォント・余白の変数定義 ----- */
+  :root {
+    /* 配色: 羊皮紙の世界観 */
+    --bg: #f3e9d2;             /* メインの羊皮紙色 */
+    --bg-soft: #ede1c4;        /* 少し沈んだ副背景 */
+    --bg-card: #f7efda;        /* カードや浮き上がる要素 */
+    --bg-deep: #e4d5b1;        /* インラインコードなどの背景 */
+  
+    --ink: #2f2418;            /* 本文の濃い焦茶 */
+    --ink-soft: #5b4a36;       /* 副次的なテキスト */
+    --ink-mute: #8a7657;       /* メタ情報・補助テキスト */
+  
+    --sepia: #6b3a1f;          /* 見出しのセピアブラウン */
+    --crimson: #8b2e22;        /* 強調・リンク・現在地 */
+    --gold: #a07636;           /* 金箔のアクセント */
+  
+    --rule: #cdb98e;           /* 区切り線（実線） */
+    --rule-soft: #ddc99e;      /* 区切り線（淡い） */
+  
+    --code-bg: #2a2014;        /* コードブロック背景（焼き印） */
+    --code-bg-soft: #362a1c;   /* コードブロック上部のヘッダー */
+    --code-ink: #ecdcb9;       /* コード文字 */
+    --code-mute: #a89572;      /* コードコメント */
+  
+    /* フォント */
+    --font-display: 'Cormorant Garamond', 'Noto Serif JP', serif;
+    --font-body: 'Lora', 'Noto Serif JP', serif;
+    --font-jp: 'Noto Serif JP', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  
+    /* 本文の最大幅（読みやすさのため制限する） */
+    --content-width: 680px;
+  }
+  
+  /* ----- ベース ----- */
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body), var(--font-jp);
+    font-size: 17px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+  
+  /* 羊皮紙の繊維感を CSS で表現（外部画像を使わない） */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.18 0 0 0 0 0.13 0 0 0 0 0.07 0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/></svg>");
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+  }
+  
+  /* 紙の周辺が経年で暗くなった感じ */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse at center, transparent 55%, rgba(120, 80, 40, 0.08) 95%, rgba(80, 50, 20, 0.18) 100%);
+  }
+  
+  /* 本文や全コンテンツは body::before/::after の上に配置 */
+  body > * {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* ----- 基本要素のタイポグラフィ ----- */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display), var(--font-jp);
+    color: var(--sepia);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  
+  h1 {
+    font-size: 48px;
+    margin: 0 0 16px;
+  }
+  
+  h2 {
+    font-size: 32px;
+    margin: 56px 0 8px;
+  }
+  
+  h3 {
+    font-size: 24px;
+    margin: 40px 0 8px;
+  }
+  
+  p {
+    font-family: var(--font-jp);
+    margin: 0 0 22px;
+    color: var(--ink);
+  }
+  
+  a {
+    color: var(--crimson);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(139, 46, 34, 0.3);
+    transition: border-color 0.2s;
+  }
+  
+  a:hover {
+    border-bottom-color: var(--crimson);
+  }
+  
+  /* インラインコード */
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    padding: 2px 7px;
+    background: var(--bg-deep);
+    color: var(--sepia);
+    border-radius: 2px;
+    border: 1px solid var(--rule);
+  }
+  
+  /* コードブロック */
+  pre {
+    margin: 28px 0 32px;
+    background: var(--code-bg);
+    color: var(--code-ink);
+    padding: 18px 20px 20px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.7;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.4),
+      0 1px 0 1px var(--code-bg-soft) inset,
+      0 14px 28px -16px rgba(60, 30, 10, 0.45);
+  }
+  
+  /* コードブロック内のインラインコードはリセット */
+  pre code {
+    background: transparent;
+    border: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+  }
+  
+  /* 引用ブロック */
+  blockquote {
+    margin: 32px 0;
+    padding: 16px 26px;
+    background: rgba(160, 118, 54, 0.06);
+    border-left: 2px solid var(--gold);
+    font-family: var(--font-jp);
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  
+  blockquote p:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* リスト */
+  ul, ol {
+    font-family: var(--font-jp);
+    margin: 0 0 22px;
+    padding-left: 24px;
+  }
+  
+  li {
+    margin: 4px 0;
+  }
+  
+  /* 区切り線 */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--rule), transparent);
+    margin: 56px 0;
+  }
+  
+  /* ----- レイアウトユーティリティ ----- */
+  .container {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }

@@ -1,0 +1,47 @@
+---
+const currentYear = new Date().getFullYear();
+// ローマ数字に変換する関数
+function toRoman(num: number): string {
+  const map: [number, string][] = [
+    [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],
+    [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'],
+    [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']
+  ];
+  let result = '';
+  for (const [value, symbol] of map) {
+    while (num >= value) {
+      result += symbol;
+      num -= value;
+    }
+  }
+  return result;
+}
+
+const romanYear = toRoman(currentYear);
+---
+
+<footer class="site-foot">
+  <span>Codex Claudia</span>
+  <span class="ornament">❦</span>
+  <span>{romanYear}</span>
+  <span class="ornament">❦</span>
+  <span>Anno Claudii</span>
+</footer>
+
+<style>
+  .site-foot {
+    padding: 28px 56px 36px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-mute);
+    letter-spacing: 0.12em;
+  }
+
+  .ornament {
+    color: var(--gold);
+    margin: 0 14px;
+  }
+</style>
