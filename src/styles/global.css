@@ -205,3 +205,9 @@
     margin: 0 auto;
     padding: 0 24px;
   }
+
+  /* アンカーリンクで飛んだときのスクロール位置調整 */
+  .article-body h2,
+  .article-body h3 {
+    scroll-margin-top: 32px;
+  }

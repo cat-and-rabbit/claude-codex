@@ -22,11 +22,11 @@ export async function getStaticPaths() {
 }
 
 const { article, allArticles } = Astro.props;
-const { Content } = await render(article);
+const { Content, headings } = await render(article);
 const { prev, next } = getAdjacentArticles(article, allArticles);
 ---
 
-<ArticleLayout article={article}>
+<ArticleLayout article={article} headings={headings}>
   <Content />
   <ArticleNav prev={prev} next={next} />
 </ArticleLayout>
