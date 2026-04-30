@@ -13,7 +13,7 @@ const { chapter, articles } = Astro.props;
 const sortedArticles = [...articles].sort((a, b) => a.data.order - b.data.order);
 ---
 
-<section class="chapter-section">
+<section class="chapter-section" id={chapter.id}>
   <header class="chapter-header">
     <span class="chapter-numeral">{chapter.numeral}</span>
     <h2 class="chapter-label">{chapter.label}</h2>
@@ -45,6 +45,7 @@ const sortedArticles = [...articles].sort((a, b) => a.data.order - b.data.order)
 <style>
   .chapter-section {
     margin: 0 0 72px;
+    scroll-margin-top: 32px;
   }
 
   .chapter-header {

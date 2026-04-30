@@ -1,0 +1,90 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  prev: CollectionEntry<'articles'> | null;
+  next: CollectionEntry<'articles'> | null;
+}
+
+const { prev, next } = Astro.props;
+
+function getSlug(article: CollectionEntry<'articles'>): string {
+  return article.id.replace(/^ja\//, '');
+}
+---
+
+{(prev || next) && (
+  <nav class="article-nav" aria-label="前後の記事">
+    {prev ? (
+      <a href={`/ja/articles/${getSlug(prev)}`} class="nav-card prev">
+        <div class="nav-label">← 前章</div>
+        <div class="nav-title">{prev.data.title}</div>
+      </a>
+    ) : (
+      <span class="nav-card-empty" aria-hidden="true"></span>
+    )}
+
+    {next ? (
+      <a href={`/ja/articles/${getSlug(next)}`} class="nav-card next">
+        <div class="nav-label">次章 →</div>
+        <div class="nav-title">{next.data.title}</div>
+      </a>
+    ) : (
+      <span class="nav-card-empty" aria-hidden="true"></span>
+    )}
+  </nav>
+)}
+
+<style>
+  .article-nav {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule-soft);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .nav-card {
+    display: block;
+    padding: 18px 20px;
+    border: 1px solid var(--rule);
+    background: var(--bg-card);
+    color: var(--ink);
+    transition: all 0.25s;
+    border-radius: 2px;
+    text-decoration: none;
+  }
+
+  .nav-card:hover {
+    border-color: var(--sepia);
+    background: var(--bg-soft);
+    transform: translateY(-1px);
+    border-bottom: 1px solid var(--sepia);
+  }
+
+  .nav-card.next {
+    text-align: right;
+  }
+
+  .nav-card-empty {
+    display: block;
+  }
+
+  .nav-label {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--ink-mute);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .nav-title {
+    font-family: var(--font-jp);
+    font-size: 15px;
+    color: var(--sepia);
+    font-weight: 500;
+  }
+</style>

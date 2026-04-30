@@ -1,0 +1,62 @@
+---
+import { chapters } from '../data/chapters';
+import type { ChapterId } from '../data/chapters';
+
+interface Props {
+  chapterId: ChapterId;
+  articleTitle: string;
+}
+
+const { chapterId, articleTitle } = Astro.props;
+
+// 現在の章情報を取得
+const currentChapter = chapters.find((c) => c.id === chapterId);
+---
+
+<nav class="breadcrumb" aria-label="現在地">
+  <a href="/ja/">トップ</a>
+  <span class="sep" aria-hidden="true">/</span>
+  {currentChapter && (
+    <>
+      <a href={`/ja/#${currentChapter.id}`}>
+        {currentChapter.numeral}
+      </a>
+      <span class="sep" aria-hidden="true">/</span>
+      <span class="current">{currentChapter.label}</span>
+      <span class="sep" aria-hidden="true">/</span>
+    </>
+  )}
+  <span class="current">{articleTitle}</span>
+</nav>
+
+<style>
+  .breadcrumb {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-mute);
+    letter-spacing: 0.08em;
+    margin-bottom: 24px;
+  }
+
+  .breadcrumb a {
+    color: var(--ink-mute);
+    text-decoration: none;
+    border: none;
+    transition: color 0.2s;
+  }
+
+  .breadcrumb a:hover {
+    color: var(--crimson);
+    border: none;
+  }
+
+  .sep {
+    margin: 0 10px;
+    color: var(--rule);
+  }
+
+  .current {
+    color: var(--ink-soft);
+  }
+</style>
