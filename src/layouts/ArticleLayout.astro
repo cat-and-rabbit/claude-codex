@@ -1,0 +1,118 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import ArticleMeta from '../components/ArticleMeta.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import ChapterSidebar from '../components/ChapterSidebar.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+  headings: MarkdownHeading[];
+}
+
+const { article, headings } = Astro.props;
+const { title, description, lastVerified, targetVersion, estimatedMinutes, chapter } = article.data;
+---
+
+<BaseLayout title={`${title} — Claude Code 写本`} description={description}>
+  <div class="article-layout">
+    <ChapterSidebar currentArticleId={article.id} />
+
+    <article class="article-prose">
+      <Breadcrumb chapterId={chapter} articleTitle={title} />
+
+      <h1 class="article-title">{title}</h1>
+      <p class="article-subtitle">{description}</p>
+
+      <ArticleMeta
+        lastVerified={lastVerified}
+        targetVersion={targetVersion}
+        estimatedMinutes={estimatedMinutes}
+      />
+
+      <div class="article-body">
+        <slot />
+      </div>
+    </article>
+
+    <TableOfContents headings={headings} />
+  </div>
+</BaseLayout>
+
+<style>
+  .article-layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr) 200px;
+    gap: 48px;
+    max-width: 1280px;
+    margin: 48px auto 96px;
+    padding: 0 32px;
+  }
+
+  /* タブレット: TOC を非表示にして 2 カラム */
+  @media (max-width: 1199px) {
+    .article-layout {
+      grid-template-columns: 240px minmax(0, 1fr);
+      max-width: 980px;
+    }
+
+    .article-layout :global(.toc) {
+      display: none;
+    }
+  }
+
+  /* モバイル: サイドバーも非表示にして 1 カラム */
+  @media (max-width: 1023px) {
+    .article-layout {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding: 0 24px;
+      max-width: var(--content-width);
+    }
+
+    .article-layout :global(.chapter-sidebar) {
+      display: none;
+    }
+  }
+
+  .article-prose {
+    min-width: 0;
+    max-width: var(--content-width);
+  }
+
+  .article-title {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 500;
+    color: var(--sepia);
+    line-height: 1.05;
+    margin: 0 0 14px;
+    letter-spacing: -0.005em;
+  }
+
+  @media (max-width: 1023px) {
+    .article-title {
+      font-size: 40px;
+    }
+  }
+
+  .article-subtitle {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink-soft);
+    margin: 0 0 28px;
+  }
+
+  .article-body :global(p:first-of-type)::first-letter {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 500;
+    float: left;
+    line-height: 0.85;
+    margin: 6px 10px 0 0;
+    color: var(--crimson);
+  }
+</style>

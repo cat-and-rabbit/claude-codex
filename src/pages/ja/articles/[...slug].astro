@@ -1,0 +1,32 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import ArticleNav from '../../../components/ArticleNav.astro';
+import { getAdjacentArticles } from '../../../utils/article-navigation';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => {
+    return !data.draft;
+  });
+
+  return articles.map((article) => {
+    // 記事 ID から言語プレフィックスを取り除く
+    // 例: 'ja/hello-claude-codex' → 'hello-claude-codex'
+    const slug = article.id.replace(/^ja\//, '');
+
+    return {
+      params: { slug },
+      props: { article, allArticles: articles },
+    };
+  });
+}
+
+const { article, allArticles } = Astro.props;
+const { Content, headings } = await render(article);
+const { prev, next } = getAdjacentArticles(article, allArticles);
+---
+
+<ArticleLayout article={article} headings={headings}>
+  <Content />
+  <ArticleNav prev={prev} next={next} />
+</ArticleLayout>

@@ -1,0 +1,33 @@
+---
+// 装飾区切り線。プロパティなし
+---
+
+<div class="fleuron" aria-hidden="true">
+    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="1">
+      <path d="M1 7 Q5 1 11 7 Q17 13 21 7" />
+      <circle cx="11" cy="7" r="1.5" fill="currentColor" stroke="none" />
+    </svg>
+  </div>
+  
+  <style>
+    .fleuron {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 56px 0;
+      color: var(--gold);
+    }
+  
+    .fleuron::before,
+    .fleuron::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--rule), transparent);
+      max-width: 140px;
+    }
+  
+    .fleuron svg {
+      margin: 0 18px;
+    }
+</style>

@@ -1,0 +1,155 @@
+---
+import type { Chapter } from '../data/chapters';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  chapter: Chapter;
+  articles: CollectionEntry<'articles'>[];
+}
+
+const { chapter, articles } = Astro.props;
+
+// 章内で order の昇順にソート
+const sortedArticles = [...articles].sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="chapter-section" id={chapter.id}>
+  <header class="chapter-header">
+    <span class="chapter-numeral">{chapter.numeral}</span>
+    <h2 class="chapter-label">{chapter.label}</h2>
+    <p class="chapter-description">{chapter.description}</p>
+  </header>
+
+  {sortedArticles.length === 0 ? (
+    <p class="empty-note">この章にはまだ記事がありません。</p>
+  ) : (
+    <ol class="article-list">
+      {sortedArticles.map((article) => {
+        const slug = article.id.replace(/^ja\//, '');
+        return (
+          <li class="article-item">
+            <a href={`/ja/articles/${slug}`} class="article-link">
+              <span class="article-order">{article.data.order}</span>
+              <span class="article-content">
+                <span class="article-title">{article.data.title}</span>
+                <span class="article-description">{article.data.description}</span>
+              </span>
+            </a>
+          </li>
+        );
+      })}
+    </ol>
+  )}
+</section>
+
+<style>
+  .chapter-section {
+    margin: 0 0 72px;
+    scroll-margin-top: 32px;
+  }
+
+  .chapter-header {
+    border-bottom: 1px solid var(--rule-soft);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+  }
+
+  .chapter-numeral {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .chapter-label {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--sepia);
+    margin: 0 0 8px;
+    line-height: 1.2;
+  }
+
+  .chapter-description {
+    font-family: var(--font-jp);
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  .empty-note {
+    font-family: var(--font-jp);
+    font-style: italic;
+    color: var(--ink-mute);
+    font-size: 14px;
+    padding: 8px 0;
+  }
+
+  .article-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .article-item {
+    margin: 0;
+  }
+
+  .article-link {
+    display: flex;
+    gap: 16px;
+    padding: 16px 12px;
+    text-decoration: none;
+    color: inherit;
+    border: none;
+    border-bottom: 1px solid var(--rule-soft);
+    transition: background 0.2s;
+  }
+
+  .article-link:hover {
+    background: rgba(160, 118, 54, 0.06);
+    border-bottom-color: var(--rule);
+  }
+
+  .article-item:last-child .article-link {
+    border-bottom: none;
+  }
+
+  .article-order {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--gold);
+    flex: none;
+    width: 28px;
+    text-align: right;
+    padding-top: 2px;
+  }
+
+  .article-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .article-title {
+    font-family: var(--font-jp);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--sepia);
+    line-height: 1.4;
+  }
+
+  .article-description {
+    font-family: var(--font-jp);
+    font-size: 13px;
+    color: var(--ink-mute);
+    line-height: 1.6;
+  }
+</style>

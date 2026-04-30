@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ChapterSection from '../../components/ChapterSection.astro';
+import Fleuron from '../../components/Fleuron.astro';
+import { getCollection } from 'astro:content';
+import { chapters } from '../../data/chapters';
+
+// 全記事を取得（draft を除く）
+const allArticles = await getCollection('articles', ({ data }) => !data.draft);
+
+// 章ごとに記事をグループ化
+const articlesByChapter = chapters.map((chapter) => ({
+  chapter,
+  articles: allArticles.filter((article) => article.data.chapter === chapter.id),
+}));
+---
+
+<BaseLayout
+  title="Claude Code 写本"
+  description="Claude Code を学ぶための日本語の手引き書。基礎から応用まで、体系的に書き進めていく学習サイト。"
+>
+  <div class="home-container">
+    <section class="intro">
+      <p class="intro-eyebrow">Codex Claudia</p>
+      <h1 class="intro-title">Claude Code 写本</h1>
+      <p class="intro-tagline">— 日本語による Claude Code の手引き書 —</p>
+      <p class="intro-lead">
+        Claude Code を体系的に学ぶための写本である。基礎から応用まで、
+        順を追って進められるよう四つの巻に分けてある。
+        どの巻からでも入れるが、初学であれば序の巻から読むことを勧めたい。
+      </p>
+    </section>
+
+    <Fleuron />
+
+    {articlesByChapter.map(({ chapter, articles }) => (
+      <ChapterSection chapter={chapter} articles={articles} />
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .home-container {
+    max-width: 760px;
+    margin: 56px auto 96px;
+    padding: 0 24px;
+  }
+
+  .intro {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .intro-eyebrow {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+  }
+
+  .intro-title {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 500;
+    color: var(--sepia);
+    margin: 0 0 8px;
+    line-height: 1;
+    letter-spacing: -0.005em;
+  }
+
+  .intro-tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink-soft);
+    margin: 0 0 32px;
+  }
+
+  .intro-lead {
+    font-family: var(--font-jp);
+    font-size: 16px;
+    line-height: 1.95;
+    color: var(--ink);
+    max-width: 580px;
+    margin: 0 auto;
+    text-align: justify;
+  }
+</style>

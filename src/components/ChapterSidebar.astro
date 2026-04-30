@@ -1,0 +1,176 @@
+---
+import { getCollection } from 'astro:content';
+import { chapters } from '../data/chapters';
+
+interface Props {
+  currentArticleId?: string;  // 現在の記事 ID（'ja/hello-claude-codex' 形式）
+}
+
+const { currentArticleId } = Astro.props;
+
+// 全記事を取得
+const allArticles = await getCollection('articles', ({ data }) => !data.draft);
+
+// ローマ数字変換
+function toRomanLowercase(num: number): string {
+  const map: [number, string][] = [
+    [10, 'x'], [9, 'ix'], [5, 'v'], [4, 'iv'], [1, 'i']
+  ];
+  let result = '';
+  for (const [value, symbol] of map) {
+    while (num >= value) {
+      result += symbol;
+      num -= value;
+    }
+  }
+  return result;
+}
+
+// 各章の記事を整理
+const chapterData = chapters.map((chapter) => {
+  const articles = allArticles
+    .filter((a) => a.data.chapter === chapter.id)
+    .sort((a, b) => a.data.order - b.data.order);
+
+  return { chapter, articles };
+});
+
+// 通し番号を計算（章をまたいで連番）
+let runningNumber = 0;
+const chaptersWithNumbers = chapterData.map(({ chapter, articles }) => ({
+  chapter,
+  articles: articles.map((article) => {
+    runningNumber++;
+    return { article, numeral: toRomanLowercase(runningNumber) };
+  }),
+}));
+---
+
+<aside class="chapter-sidebar" aria-label="章ナビゲーション">
+  {chaptersWithNumbers.map(({ chapter, articles }) => (
+    <div class="chapter-group">
+      <div class="chapter-label">
+        {chapter.numeral} &middot; {chapter.label}
+      </div>
+
+      {articles.length === 0 ? (
+        <p class="empty-note">準備中</p>
+      ) : (
+        <ul class="article-list">
+          {articles.map(({ article, numeral }) => {
+            const slug = article.id.replace(/^ja\//, '');
+            const isCurrent = article.id === currentArticleId;
+            return (
+              <li>
+                <a
+                  href={`/ja/articles/${slug}`}
+                  class:list={['article-link', { current: isCurrent }]}
+                  aria-current={isCurrent ? 'page' : undefined}
+                >
+                  <span class="numeral">{numeral}</span>
+                  <span class="title">{article.data.title}</span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  ))}
+</aside>
+
+<style>
+  .chapter-sidebar {
+    font-family: var(--font-jp);
+    font-size: 14px;
+    line-height: 1.6;
+    padding-right: 32px;
+    border-right: 1px solid var(--rule-soft);
+  }
+
+  .chapter-group {
+    margin-bottom: 28px;
+  }
+
+  .chapter-label {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .chapter-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule-soft);
+  }
+
+  .empty-note {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--ink-mute);
+    font-size: 13px;
+    padding: 4px 16px;
+    margin: 0;
+  }
+
+  .article-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .article-list li {
+    margin: 2px 0;
+  }
+
+  .article-link {
+    display: flex;
+    gap: 10px;
+    padding: 6px 12px 6px 16px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-left: 1px solid transparent;
+    border-bottom: none;
+    transition: all 0.2s;
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+
+  .article-link:hover {
+    color: var(--sepia);
+    background: rgba(160, 118, 54, 0.06);
+    border-bottom: none;
+  }
+
+  .article-link.current {
+    color: var(--crimson);
+    border-left: 1.5px solid var(--crimson);
+    background: rgba(139, 46, 34, 0.06);
+    font-weight: 500;
+  }
+
+  .numeral {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--ink-mute);
+    font-size: 13px;
+    flex: none;
+    padding-top: 1px;
+  }
+
+  .article-link.current .numeral {
+    color: var(--crimson);
+  }
+
+  .title {
+    flex: 1;
+  }
+</style>
