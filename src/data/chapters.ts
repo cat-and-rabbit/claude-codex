@@ -1,4 +1,4 @@
-export type ChapterId = 'liber-1' | 'liber-2' | 'liber-3' | 'liber-4';
+export type ChapterId = 'liber-1' | 'liber-2' | 'liber-3' | 'liber-4' | 'liber-5';
 
 export interface Chapter {
   id: ChapterId;
@@ -30,6 +30,12 @@ export const chapters: Chapter[] = [
     id: 'liber-4',
     numeral: 'Liber IV',
     label: '応用',
-    description: 'MCP、カスタムワークフロー、チームでの活用。一段上の使い方へ。',
+    description: 'Skills、Subagents、MCP、Hooks など、Claude Code を自分の環境に組み上げる。',
+  },
+  {
+    id: 'liber-5',
+    numeral: 'Liber V',
+    label: 'フロンティア',
+    description: 'Sandbox、Agent Teams、クラウド、Agent SDK。Claude Code の最前線を見渡す。',
   },
 ];

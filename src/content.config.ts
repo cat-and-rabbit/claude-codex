@@ -9,7 +9,7 @@ const articles = defineCollection({
     schema: z.object({
         title: z.string(),
         description: z.string(),
-        chapter: z.enum(['liber-1', 'liber-2', 'liber-3', 'liber-4']),
+        chapter: z.enum(['liber-1', 'liber-2', 'liber-3', 'liber-4', 'liber-5']),
         order: z.number(),
         lastVerified: z.date(),
         targetVersion: z.string(),
