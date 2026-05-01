@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-「Claude Code 写本」(Codex Claudia) — a Japanese guide for Claude Code, published as a static Astro site. Content is structured as four "Liber" chapters that progress from introduction to advanced usage.
+「Claude Code 写本」(Codex Claudia) — a Japanese guide for Claude Code, published as a static Astro site. Content is structured as five "Liber" chapters: Liber I (序) → II (基礎) → III (実践) → IV (応用) → V (フロンティア).
 
 For project-level orientation (chapter overview, tech stack, how to run locally), see [README.md](./README.md). This document focuses on editorial conventions and internal implementation notes.
 
@@ -22,7 +22,7 @@ No test or lint scripts are configured. Node 22.12+ required (see `engines` in p
 
 Articles live in `src/content/articles/<lang>/*.md` (currently `ja` only) under an Astro content collection (`src/content.config.ts`). Required frontmatter:
 
-- `chapter`: `liber-1` | `liber-2` | `liber-3` | `liber-4` (chapters defined in `src/data/chapters.ts`)
+- `chapter`: `liber-1` | `liber-2` | `liber-3` | `liber-4` | `liber-5` (chapters defined in `src/data/chapters.ts`)
 - `order`: integer, sorts within a chapter
 - `lastVerified`: date the content was checked against current Claude Code behavior
 - `targetVersion`: Claude Code version string (e.g. `"2.x"`)
@@ -56,9 +56,11 @@ The book assumes a **VSCode extension** reader unless noted. Flag CLI-only featu
 
 Introduce concepts where the reader hands-on encounters them, not preemptively. 序 stays at the "what is this / how do I install" level — permissions, compaction, sub-agents are deferred to chapters where they connect to a concrete action.
 
-### Liber II (基礎) scope line
+### Chapter scope lines
 
-Liber II caps at "commands + the first CLAUDE.md". Skills, sub-agents, MCP, hooks, multiple/nested CLAUDE.md, monorepo concerns all belong in Liber IV (応用), even when topically related.
+- **Liber II (基礎)** caps at "commands + the first CLAUDE.md". Skills, sub-agents, MCP, hooks, multiple/nested CLAUDE.md, monorepo concerns belong in Liber IV (応用).
+- **Liber IV (応用)** covers stable customization mechanisms (Skills, Subagents, MCP, Hooks, multiple CLAUDE.md, Plugins, settings).
+- **Liber V (フロンティア)** covers experimental and frontier features whose shelf life is shorter (Sandbox, auto mode, Agent Teams, cloud sessions like `/ultraplan` `/ultrareview` `/autofix-pr`, Routines, Headless mode, Claude Agent SDK). Flag content here as living material that needs more frequent verification.
 
 ### Article style
 

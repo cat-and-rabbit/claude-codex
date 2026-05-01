@@ -1,13 +1,14 @@
 # Claude Code 写本 (Codex Claudia)
 
-Claude Code を体系的に学ぶための日本語の手引き書である。基礎から応用まで、四つの巻 (Liber) に分けて段階的にまとめている。
+Claude Code を体系的に学ぶための日本語の手引き書である。基礎から応用、最前線まで、五つの巻 (Liber) に分けて段階的にまとめている。
 
 ## 構成
 
 - **Liber I ─ 序** : Claude Code とは何か、どう始めるか
 - **Liber II ─ 基礎** : プロンプト、文脈、CLAUDE.md、権限など、日々の使いこなしの土台
 - **Liber III ─ 実践** : 大きなタスクの分割、レビュー、失敗からの回復 *(執筆中)*
-- **Liber IV ─ 応用** : MCP、サブエージェント、チームでの活用 *(執筆中)*
+- **Liber IV ─ 応用** : Skills、Subagents、MCP、Hooks など、自分の環境に組み上げる *(執筆中)*
+- **Liber V ─ フロンティア** : Sandbox、Agent Teams、クラウド、Agent SDK *(執筆中)*
 
 各記事には動作確認済みの Claude Code バージョン (`targetVersion`) と確認日 (`lastVerified`) を記録している。Claude Code 自体の更新が頻繁なため、記事と実装が乖離した時の参照点となる。
 
