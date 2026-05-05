@@ -164,6 +164,47 @@
     padding: 0;
     font-size: inherit;
   }
+
+  /* コードブロック コピーボタン */
+  .code-wrapper {
+    position: relative;
+    margin: 28px 0 32px;
+  }
+
+  .code-wrapper pre {
+    margin: 0;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 9px;
+    right: 10px;
+    background: var(--code-bg-soft);
+    color: var(--code-mute);
+    border: 1px solid rgba(168, 149, 114, 0.25);
+    border-radius: 3px;
+    padding: 2px 9px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    cursor: pointer;
+    opacity: 0.55;
+    transition: opacity 0.15s, color 0.15s, border-color 0.15s;
+    line-height: 1.6;
+  }
+
+  .code-wrapper:hover .copy-btn,
+  .copy-btn:focus-visible {
+    opacity: 1;
+  }
+
+  .copy-btn:hover {
+    color: var(--code-ink);
+    border-color: rgba(168, 149, 114, 0.55);
+  }
+
+  .copy-btn:active {
+    transform: scale(0.95);
+  }
   
   /* 引用ブロック */
   blockquote {
