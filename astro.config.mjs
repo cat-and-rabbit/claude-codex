@@ -24,8 +24,25 @@ function rehypeExternalLinks() {
   };
 }
 
+function remarkRemoveComments() {
+  return (tree) => {
+    function isHtmlComment(node) {
+      return node.type === 'html' && typeof node.value === 'string' && node.value.trimStart().startsWith('<!--');
+    }
+    function walk(node) {
+      if (!node.children) return;
+      node.children = node.children.filter(child => !isHtmlComment(child));
+      node.children.forEach(walk);
+    }
+    walk(tree);
+  };
+}
+
 // https://astro.build/config
 export default defineConfig({
+  // TODO: デプロイ先の URL に変更してください（サイトマップと OGP の og:url に使用されます）
+  site: 'https://claude-codex.pages.dev/',
+
   vite: {
     plugins: [tailwindcss()]
   },
@@ -33,6 +50,7 @@ export default defineConfig({
   integrations: [mdx(), sitemap()],
 
   markdown: {
+    remarkPlugins: [remarkRemoveComments],
     rehypePlugins: [rehypeExternalLinks]
   }
 });

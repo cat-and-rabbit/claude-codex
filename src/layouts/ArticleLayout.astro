@@ -16,7 +16,7 @@ const { article, headings } = Astro.props;
 const { title, description, lastVerified, targetVersion, estimatedMinutes, chapter } = article.data;
 ---
 
-<BaseLayout title={`${title} — Claude Code 写本`} description={description}>
+<BaseLayout title={`${title} — Claude Code 写本`} description={description} ogType="article">
   <div class="article-layout">
     <ChapterSidebar currentArticleId={article.id} />
 

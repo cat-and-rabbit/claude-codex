@@ -250,4 +250,3 @@ Hook は subagent や skill の YAML フロントマター内にも書ける。*
 ## 参考情報
 
 - [Hooks (公式)](https://code.claude.com/docs/ja/hooks) — 全イベント・全フィールドのリファレンス
-- [Hooks ガイド](https://code.claude.com/docs/ja/hooks-guide) — ユースケースとサンプル <!-- パスは推測。要確認 -->

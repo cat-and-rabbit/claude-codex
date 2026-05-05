@@ -35,4 +35,4 @@ claude --version
 ## 参考情報
 
 - [GitHub: anthropics/claude-code リリース](https://github.com/anthropics/claude-code/releases) — リリースごとの変更点
-- [Claude Code Changelog](https://code.claude.com/docs/ja/changelog) — 公式の変更履歴 <!-- パス /docs/ja/changelog は推測。要確認 -->
+- [Claude Code Changelog](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md) — 公式の変更履歴
